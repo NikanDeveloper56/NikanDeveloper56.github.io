@@ -278,9 +278,30 @@ html[dir="ltr"] [lang-en].block{display:block}
   .cur-ring.hover{width:54px;height:54px;background:rgba(255,255,255,.12)}
   a,.tab,.btn,.c-link,.copy-btn,button,[role="button"]{cursor:none!important}
 }
+
+/* ---------- Splash intro screen ---------- */
+#splash{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(120% 100% at 50% 0%,#1b2028,var(--bg-2));
+  transition:opacity .8s ease,visibility .8s ease;text-align:center;padding:var(--space)}
+#splash.hide{opacity:0;visibility:hidden}
+#splash .sp-inner{max-width:62ch}
+#splash .sp-text{font-family:var(--fa);font-size:clamp(1.05rem,3.4vw,1.6rem);line-height:1.9;color:var(--fg);font-weight:500}
+html[dir="ltr"] #splash .sp-text{font-family:var(--sans)}
+#splash .sp-bar{margin:1.8rem auto 0;width:min(220px,60%);height:3px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+#splash .sp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--coral-2));animation:spfill 5s linear forwards}
+@keyframes spfill{to{width:100%}}
+#splash .sp-logo{width:74px;height:74px;margin:0 auto 1.6rem;color:var(--coral);opacity:.9}
+#splash .sp-logo svg{width:100%;height:100%;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5))}
 </style>
 </head>
-<body>
+<body><div id="splash" aria-hidden="true">
+  <div class="sp-inner">
+    <div class="sp-logo"><svg viewBox="0 0 200 160"><g fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M55 30 L55 130 M55 30 L150 130 M150 30 L150 130"/></g></svg></div>
+    <div class="sp-text"><span lang-fa>این برنامه‌نویس ۳ سال برای تمام این مهارت‌ها تمرین کرده و کد نوشته است.</span><span lang-en>This developer has practiced 3 years for all these skills and written code.</span></div>
+    <div class="sp-bar"><i></i></div>
+  </div>
+</div>
+
 <div class="bg-fx"></div>
 <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div>
 <div class="noise"></div>
@@ -659,6 +680,14 @@ if(!reduce){
   document.querySelectorAll(hov).forEach(function(el){el.addEventListener('mouseenter',function(){ring.classList.add('hover');});el.addEventListener('mouseleave',function(){ring.classList.remove('hover');});});
   document.addEventListener('mousedown',function(){dot.style.width='12px';dot.style.height='12px';});
   document.addEventListener('mouseup',function(){dot.style.width='7px';dot.style.height='7px';});
+})();
+</script>
+
+<script>
+(function(){
+  var s=document.getElementById('splash');
+  if(s){setTimeout(function(){s.classList.add('hide');},5000);
+    s.addEventListener('transitionend',function(){if(s.classList.contains('hide'))s.remove();});}
 })();
 </script>
 </body>
