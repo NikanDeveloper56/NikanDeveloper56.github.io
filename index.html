@@ -268,6 +268,16 @@ html[dir="ltr"] [lang-fa]{display:none}
 html[dir="ltr"] [lang-en]{display:inline}
 html[dir="ltr"] [lang-en].block{display:block}
 [lang-fa].block{display:block}
+
+/* ---------- Custom cursor: dot + ring ---------- */
+@media (hover:hover) and (pointer:fine){
+  *{cursor:none!important}
+  .cur-dot,.cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference}
+  .cur-dot{width:7px;height:7px;background:#fff;transition:width .15s,height .15s}
+  .cur-ring{width:34px;height:34px;border:1.5px solid rgba(255,255,255,.7);transition:width .2s,height .2s,background .2s}
+  .cur-ring.hover{width:54px;height:54px;background:rgba(255,255,255,.12)}
+  a,.tab,.btn,.c-link,.copy-btn,button,[role="button"]{cursor:none!important}
+}
 </style>
 </head>
 <body>
@@ -631,6 +641,24 @@ if(!reduce){
   window.addEventListener('scroll',spy,{passive:true});
   window.addEventListener('resize',spy);
   spy();
+})();
+</script>
+
+<div class="cur-ring" id="curRing"></div>
+<div class="cur-dot" id="curDot"></div>
+<script>
+(function(){
+  var fine=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if(!fine)return;
+  var dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
+  var rx=0,ry=0,mx=0,my=0;
+  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+  function loop(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);}
+  loop();
+  var hov='a,.tab,.btn,.c-link,.copy-btn,button,[role="button"]';
+  document.querySelectorAll(hov).forEach(function(el){el.addEventListener('mouseenter',function(){ring.classList.add('hover');});el.addEventListener('mouseleave',function(){ring.classList.remove('hover');});});
+  document.addEventListener('mousedown',function(){dot.style.width='12px';dot.style.height='12px';});
+  document.addEventListener('mouseup',function(){dot.style.width='7px';dot.style.height='7px';});
 })();
 </script>
 </body>
