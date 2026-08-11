@@ -304,6 +304,24 @@ html[dir="ltr"] #splash .sp-text{font-family:var(--sans)}
 #splash .sp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--gold),var(--coral-2));background-size:200% 100%;animation:spfill 5s linear forwards,spgrad 2.5s linear infinite}
 @keyframes spfill{to{width:100%}}
 @keyframes spgrad{to{background-position:-200% 0}}
+
+/* ---------- Blue hover glow (desktop pointer) ---------- */
+@media (hover:hover) and (pointer:fine){
+  .glass,.btn,.c-link,.tab,.cert,.skill,.proj,.coin,.philo .q{
+    transition:transform .28s cubic-bezier(.2,.85,.25,1),border-color .28s,box-shadow .35s,background .28s;
+  }
+  .glass:hover,.btn:hover,.c-link:hover,.tab:hover,.cert:hover,.skill:hover,.proj:hover,.coin:hover{
+    border-color:rgba(91,155,213,.55)!important;
+    box-shadow:var(--hi),0 0 0 1px rgba(91,155,213,.35),0 18px 50px -16px rgba(91,155,213,.55),0 0 34px -4px rgba(91,155,213,.45)!important;
+  }
+  .btn-primary:hover{
+    border-color:rgba(91,155,213,.7)!important;
+    box-shadow:0 14px 34px -10px var(--coral-glow),0 0 30px -2px rgba(91,155,213,.6)!important;
+  }
+  .tab.active{
+    box-shadow:var(--hi),0 0 26px -4px rgba(91,155,213,.5)!important;
+  }
+}
 </style>
 </head>
 <body><div id="splash" aria-hidden="true">
