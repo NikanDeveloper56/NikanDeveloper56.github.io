@@ -322,9 +322,18 @@ html[dir="ltr"] #splash .sp-text{font-family:var(--sans)}
     box-shadow:var(--hi),0 0 26px -4px rgba(91,155,213,.5)!important;
   }
 }
+
+/* ---------- Windows-style selection drag box ---------- */
+#selbox{position:fixed;z-index:9000;display:none;pointer-events:none;
+  background:rgba(91,155,213,.18);border:1px solid rgba(91,155,213,.75);
+  border-radius:1px}
+@media (hover:none),(pointer:coarse){/* disable on touch */}
+  #selbox{display:none!important}
+}
 </style>
 </head>
-<body><div id="splash" aria-hidden="true">
+<body><div id="selbox"></div>
+<div id="splash" aria-hidden="true">
   <div class="sp-orb so1"></div><div class="sp-orb so2"></div><div class="sp-orb so3"></div>
   <div class="sp-inner">
     <div class="sp-logo"><svg viewBox="0 0 200 160"><g fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M55 30 L55 130 M55 30 L150 130 M150 30 L150 130"/></g></svg></div>
@@ -719,6 +728,34 @@ if(!reduce){
   var s=document.getElementById('splash');
   if(s){setTimeout(function(){s.classList.add('hide');},5000);
     s.addEventListener('transitionend',function(){if(s.classList.contains('hide'))s.remove();});}
+})();
+</script>
+
+<script>
+(function(){
+  var box=document.getElementById('selbox');
+  if(!box)return;
+  var coarse=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
+  if(coarse)return;
+  var sx=0,sy=0,dragging=false,moved=false;
+  function ignore(t){while(t&&t!==document.body){if(t.closest&&t.closest('a,button,.btn,.tab,.c-link,.glass,.copy-btn,input,textarea,[role="button"]'))return true;t=t.parentElement;}return false;}
+  document.addEventListener('mousedown',function(e){
+    if(e.button!==0)return;
+    if(ignore(e.target))return;
+    dragging=true;moved=false;sx=e.clientX;sy=e.clientY;
+    box.style.display='block';box.style.left=sx+'px';box.style.top=sy+'px';box.style.width='0px';box.style.height='0px';
+  });
+  document.addEventListener('mousemove',function(e){
+    if(!dragging)return;
+    var x=e.clientX,y=e.clientY,w=Math.abs(x-sx),hh=Math.abs(y-sy);
+    if(w>4||hh>4)moved=true;
+    box.style.left=Math.min(sx,x)+'px';box.style.top=Math.min(sy,y)+'px';
+    box.style.width=w+'px';box.style.height=hh+'px';
+  });
+  document.addEventListener('mouseup',function(){
+    dragging=false;box.style.display='none';
+  });
+  window.addEventListener('scroll',function(){if(dragging){dragging=false;box.style.display='none';}});
 })();
 </script>
 </body>
